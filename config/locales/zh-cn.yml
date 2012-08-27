@@ -1,0 +1,12 @@
+zh-CN:
+  activerecord:
+    models:
+      notice: 消息
+      channel: 频道
+      channel_widget: 频道组件
+      information_widget: 消息组件
+      news_widget: 新闻组件
+      notice_widget: 通知组件
+    attributes:
+      channel:
+        title: 频道号

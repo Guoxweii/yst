@@ -1,0 +1,33 @@
+@import "compass";
+
+body {
+	width: 1280px;
+	height: 768px;
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+	position: relative;
+}
+
+body {
+	
+	color: white;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	padding: 0;
+}
+
+.hidden {
+	display: none;
+}
+
+.panel {
+	width: 1280px;
+	height: 768px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background: image-url("bg.png") no-repeat left top;
+}

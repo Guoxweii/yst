@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>yst</title>
+		<%= stylesheet_link_tag "ipanel", :media => "all" %>
+		<%= javascript_include_tag "pox" %>
+		<script type="text/javascript">
+			$p.nowBaseline(<%=raw Time.now.iso8601.to_json %>);
+		</script>
+		<%= yield :head %>
+	</head>
+	<body onload="Pox.doReady()" onunload="Pox.doLeave()">
+		<%= yield %>
+	</body>
+</html>
+

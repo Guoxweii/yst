@@ -4,7 +4,7 @@ source "http://gems.bstar.wido.me"
 gem 'rails', '3.2.8'
 
 gem 'pg'
-gem "bubble", '~> 0.1.22'#, :path => "../bubble"
+gem "bubble", '~> 0.1.22', :path => "../bubble"
 gem "pox", '~> 0.1.4'
 
 # Gems used only for assets and not required

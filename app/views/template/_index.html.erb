@@ -1,2 +1,130 @@
+<% content_for :head do %>
+<style type="text/css">
+body {
+	background-color: transparent;
+}
+</style>
+<script type="text/javascript">
+
+var channel_num = <%= raw @page.widget(PlayerWidget).stack.entries_scoped.first.title.to_json %>
+
+function setTime(clocks) {
+	var time = $p.now();
+	var noonElement = $p.getById("noon")
+
+	var hour = time.getHours();
+	var noon = hour >= 12 ? "PM" : "AM" ;
+	noonElement.innerHTML = noon;
+	clocks[0].innerHTML = parseInt(hour/10, 10);
+	clocks[1].innerHTML = hour%10;
+
+	var minute = time.getMinutes();
+	clocks[2].innerHTML = parseInt(minute/10, 10);
+	clocks[3].innerHTML = minute%10;
+
+	setTimeout(function() {
+		setTime(clocks);
+	}, 5000);
+}
+
+function noticeScroll(element) {
+	var parentElement = $p.findByClass(element, "parent");
+	var innerElement = $p.findByClass(element, "inner");
+	var scrollWidth = innerElement.scrollWidth;
+	var parentWidth = parentElement.clientWidth;
+	if (parentWidth < scrollWidth) {
+		var left = 0;
+		scroll(innerElement, scrollWidth, parentWidth, left);
+	}
+}
+
+function scroll(element, scrollWidth, parentWidth, left) {
+	left -= 4;
+	if (-left > scrollWidth) {
+		left = parentWidth;
+	}
+	element.style.left = left + "px";
+	setTimeout(function() {
+		scroll(element, scrollWidth, parentWidth, left);
+	}, 50)
+}
+
+$p.ready(function() {
+	setTimeout(function() {
+		$a.Broadcast.playChannel(channel_num || 0);
+		var p = $p.getById("player");
+		$a.Broadcast.screenDimension(p.offsetLeft, p.offsetTop, p.offsetWidth, p.offsetHeight);
+	}, 1000)
+	var clocks = $p.queryByClass($p.getById("time"), "num");
+	setTime(clocks);
+
+	<% if Notice.last.present? %>
+	noticeScroll($p.getById("notice"));
+	<% end %>
+
+	// setTimeout(function() {
+	// 	window.location.href = window.location.href;
+	// }, 1000*60*5)
+})
+
+
+
+</script>
+
+<% notices = @page.widget(NewsWidget).stack.entries_scoped.limit(7) %>
+<% @news = notices.first(2) %>
+<% @informations = notices.last(5) %>
+<% @weather = Weather.where(:title => Date.today.to_s).first %>
+<% end %>
+
 <div class="panel">
+
+	<div id="notice">
+		<% if notice = Notice.last %>
+		<div class="title">公告:</div>
+		<div class="parent">
+			<span class="inner">
+				<%= notice.title %>七堇年的首部随笔集，全书共分为两部分，惊蛰与清明，寓意成长与写作路途上的不同阶段；收录曾经发表在杂志上的部分中短篇作品，并加入了大部分最新创作的散文等作品。
+			</span>
+		</div>
+		<% end %>
+	</div>
+
+	<div id="player" class="player"></div>
+
+	<div class="news">
+		<div class="title">最近新闻</div>
+		<% @news.each do |new| %>
+			<div class="item"><%= new.title %></div>
+		<% end %>
+	</div>
+
+	<div class="weather">
+		<div class="temperature sunshine"><%= @weather.extra1 %><span class="unit">℃</span></div>
+		<div class="memo"><%= @weather.extra2 %></div>
+		<div class="memo"><%= @weather.extra3 %></div>
+	</div>
+
+	<div class="clock">
+		<div class="date">
+			<% today = Date.today %>
+			<%=l today, :format => :long %>
+		</div>
+		<div id="time" class="time">
+			<div id="noon" class="noon"></div>
+			<div class="num"></div>
+			<div class="num"></div>
+			<div class="space">:</div>
+			<div class="num"></div>
+			<div class="num"></div>
+		</div>
+	</div>
+
+	<div class="information">
+		<div class="title">参考消息</div>
+		<% @informations.each do |information| %>
+			<div class="item"><%= information.title %></div>
+		<% end %>
+	</div>
+
 </div>

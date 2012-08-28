@@ -6,6 +6,8 @@ gem 'rails', '3.2.8'
 gem 'pg'
 gem "bubble", '~> 0.1.22', :path => "../bubble"
 gem "pox", '~> 0.1.4'
+gem "savon", "~> 1.1.0"
+gem "whenever", "~> 0.7.3", :require => false
 
 # Gems used only for assets and not required
 # in production environments by default.

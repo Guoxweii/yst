@@ -3,7 +3,7 @@ zh-CN:
     models:
       notice: 消息
       channel: 频道
-      play_widget: 频道组件
+      player_widget: 频道组件
       information_widget: 消息组件
       news_widget: 新闻组件
       notice_widget: 通知组件
@@ -11,3 +11,9 @@ zh-CN:
     attributes:
       channel:
         title: 频道号
+      weather:
+        title:      日期
+        release_at: 上线日期
+        extra1:     当前温度
+        extra2:     温度范围
+        extra3:     天气描述

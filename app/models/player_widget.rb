@@ -1,10 +1,10 @@
-class PlayWidget < Bubble::Widget
+class PlayerWidget < Bubble::Widget
   self.unique!
   
   before_validation :assgin_position
   
   def assgin_position
-    self.position = "play"
+    self.position = "player"
   end
   
   def summary(*args)

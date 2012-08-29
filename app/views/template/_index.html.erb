@@ -30,7 +30,7 @@ function setTime(clocks) {
 function noticeScroll(element) {
 	var parentElement = $p.findByClass(element, "parent");
 	var innerElement = $p.findByClass(element, "inner");
-	var scrollWidth = innerElement.scrollWidth;
+	var scrollWidth = innerElement.offsetWidth;
 	var parentWidth = parentElement.clientWidth;
 	if (parentWidth < scrollWidth) {
 		var left = 0;
@@ -39,32 +39,34 @@ function noticeScroll(element) {
 }
 
 function scroll(element, scrollWidth, parentWidth, left) {
-	left -= 4;
+	left -= 8;
 	if (-left > scrollWidth) {
 		left = parentWidth;
 	}
 	element.style.left = left + "px";
 	setTimeout(function() {
 		scroll(element, scrollWidth, parentWidth, left);
-	}, 50)
+	}, 200)
 }
 
 $p.ready(function() {
-	setTimeout(function() {
-		$a.Broadcast.playChannel(channel_num || 0);
-		var p = $p.getById("player");
-		$a.Broadcast.screenDimension(p.offsetLeft, p.offsetTop, p.offsetWidth, p.offsetHeight);
-	}, 1000)
+
+	$a.Broadcast.playChannel(channel_num || 0);
+	var p = $p.getById("player");
+	$a.Broadcast.screenDimension(p.offsetLeft, p.offsetTop, p.offsetWidth, p.offsetHeight);
+
 	var clocks = $p.queryByClass($p.getById("time"), "num");
 	setTime(clocks);
 
 	<% if Notice.last.present? %>
-	noticeScroll($p.getById("notice"));
+	setTimeout(function() {
+		noticeScroll($p.getById("notice"));
+	}, 10000);
 	<% end %>
 
-	// setTimeout(function() {
-	// 	window.location.href = window.location.href;
-	// }, 1000*60*5)
+	setTimeout(function() {
+		window.location.href = window.location.href;
+	}, 1000*60*3)
 })
 
 
@@ -83,9 +85,9 @@ $p.ready(function() {
 		<% if notice = Notice.last %>
 		<div class="title">公告:</div>
 		<div class="parent">
-			<span class="inner">
-				<%= notice.title %>
-			</span>
+			<div class="inner">
+				<%= notice.title %>七堇年的首部随笔集，全书共分为两部分，惊蛰与清明，寓意成长与写作路途上的不同阶段；收录曾经发表在杂志上的部分中短篇作品，并加入了大部分最新创作的散文等作品。
+			</div>
 		</div>
 		<% end %>
 	</div>

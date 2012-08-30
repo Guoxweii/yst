@@ -4,7 +4,7 @@ source "http://gems.bstar.wido.me"
 gem 'rails', '3.2.8'
 
 gem 'pg'
-gem "bubble", '~> 0.1.24'#, :path => "../bubble"
+gem "bubble", '~> 0.1.25'#, :path => "../bubble"
 gem "pox", '~> 0.1.4'
 gem "savon", "~> 1.1.0"
 gem "whenever", "~> 0.7.3", :require => false

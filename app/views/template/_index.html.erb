@@ -102,7 +102,7 @@ $p.ready(function() {
 	</div>
 
 	<div class="weather">
-		<div class="temperature sunshine"><%= @weather.extra1 %><span class="unit">℃</span></div>
+		<div class="temperature <%= @weather.code %>"><%= @weather.extra1 %><span class="unit">℃</span></div>
 		<div class="memo"><%= @weather.extra2 %></div>
 		<div class="memo"><%= @weather.extra3 %></div>
 	</div>

@@ -124,9 +124,26 @@ p, h1, h2, h3, h4, h5, h6 {
 				font-size: 35px;
 			}
 
+			&.snow {
+				background: image-url("Snow.png") no-repeat right center;
+			}
+
 			&.sunshine {
 				background: image-url("Sun.png") no-repeat right center;
 			}
+
+			&.cloudy {
+				background: image-url("Cloudy-Sky.png") no-repeat right center;
+			}
+
+			&.rain {
+				background: image-url("Drizzle.png") no-repeat right center;
+			}
+
+			&.thunder {
+				background: image-url("Thunder-Shower.png") no-repeat right center;
+			}
+
 		}
 
 		.memo {

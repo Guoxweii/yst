@@ -73,16 +73,15 @@ $p.ready(function() {
 
 </script>
 
-<% notices = @page.widget(NewsWidget).stack.entries_scoped.limit(7) %>
-<% @news = notices.first(2) %>
-<% @informations = notices.last(5) %>
-<% @weather = Weather.where(:title => Date.today.to_s).first || Weather.new%>
+<% @news = @page.widget(NewsWidget).stack.entries_scoped.limit(2) %>
+<% @informations = @page.widget(InformationWidget).stack.entries_scoped.limit(5) %>
+<% @weather = Weather.where(:title => Date.today.to_s).first || Weather.new %>
 <% end %>
 
 <div class="panel">
 
 	<div id="notice">
-		<% if notice = Notice.last %>
+		<% if notice = Bubble::Stack.where(:code => "notice").first.entries.first %>
 		<div class="title">公告:</div>
 		<div class="parent">
 			<div class="inner">

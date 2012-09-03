@@ -76,7 +76,7 @@ $p.ready(function() {
 <% notices = @page.widget(NewsWidget).stack.entries_scoped.limit(7) %>
 <% @news = notices.first(2) %>
 <% @informations = notices.last(5) %>
-<% @weather = Weather.where(:title => Date.today.to_s).first %>
+<% @weather = Weather.where(:title => Date.today.to_s).first || Weather.new%>
 <% end %>
 
 <div class="panel">

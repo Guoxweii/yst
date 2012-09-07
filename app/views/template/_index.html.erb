@@ -13,7 +13,7 @@ function setTime(clocks) {
 	var noonElement = $p.getById("noon")
 
 	var hour = time.getHours();
-	var noon = hour >= 12 ? "PM" : "AM" ;
+	var noon = hour >= 12 ? "下午" : "上午" ;
 	noonElement.innerHTML = noon;
 	clocks[0].innerHTML = parseInt(hour/10, 10);
 	clocks[1].innerHTML = hour%10;

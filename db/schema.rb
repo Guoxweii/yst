@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120819000108) do
+ActiveRecord::Schema.define(:version => 20120907065730) do
 
   create_table "bubble_areas", :force => true do |t|
     t.string   "code"
@@ -90,15 +90,16 @@ ActiveRecord::Schema.define(:version => 20120819000108) do
   create_table "bubble_stacks", :force => true do |t|
     t.string   "code"
     t.string   "name"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.string   "entry_clazz"
     t.integer  "group_id"
     t.text     "i18n_columns"
+    t.boolean  "latch",        :default => false
   end
 
   create_table "bubble_users", :force => true do |t|
-    t.string   "login",                  :default => "",    :null => false
+    t.string   "username",               :default => "",    :null => false
     t.string   "encrypted_password",     :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -112,10 +113,11 @@ ActiveRecord::Schema.define(:version => 20120819000108) do
     t.datetime "updated_at",                                :null => false
     t.string   "role"
     t.boolean  "is_superadmin",          :default => false
+    t.string   "email"
   end
 
-  add_index "bubble_users", ["login"], :name => "index_bubble_users_on_login", :unique => true
   add_index "bubble_users", ["reset_password_token"], :name => "index_bubble_users_on_reset_password_token", :unique => true
+  add_index "bubble_users", ["username"], :name => "index_bubble_users_on_login", :unique => true
 
   create_table "bubble_widgets", :force => true do |t|
     t.string   "title"

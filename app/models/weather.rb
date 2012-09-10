@@ -1,7 +1,7 @@
 #encoding: utf-8
 class Weather < Bubble::Entry
   auto_page_attrs :title, :released_at, :extra1, :extra2, :extra3, :code
-  Weather_arr = [["雪","snow"],["雷","thunder"],["雨","rain"],["多云","cloudy"],["晴","sunshine"]]
+  Weather_arr = [["雪","snow"],["雷","thunder"],["雨","rain"],["阴","cloudy"],["多云","cloudy"],["晴","sunshine"]]
   before_save :get_style
 
   def self.get_weather

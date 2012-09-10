@@ -1,0 +1,65 @@
+<div class="page-header"><h1>未审核列表</h1></div>
+
+<% group_options = {} %>
+<% Bubble::Group.all.each do |group| %>
+	<% arr = [] %>
+	<% group.stacks.order(:name).each do |stack| %>
+		<% arr << [stack.name, stack.id] %>
+	<% end %>
+	<% arr << [] if arr.size == 0 %>
+	<% group_options[group.name] = arr %>
+<% end %>
+
+<% arr = [] %>
+<% Bubble::Stack.order(:name).each do |stack| %>
+	<% if stack.group.blank? %>
+		<% arr << [stack.name, stack.id] %>
+	<% end %>
+<% end %>
+<% arr << [] if arr.size == 0 %>
+<% group_options["其它"] = arr %>
+
+<style type="text/css">
+	.grouped_select {
+		width: 150px;
+	}
+</style>
+
+<% content_for :sidebar do %>
+	<h3>过滤条件</h3>
+	<%= simple_form_for @search, :url => public_path(main_app.checkable_admin_chk_entries_path), html: { method: "get" } do |f| %>
+		<%= f.input "title_contains", :label => "标题" %>
+		<%= f.input "stack_id_eq", :as => :grouped_select, :collection => group_options, :group_method => :last, :group_label_method => :first, :label => "信息种类" %>
+		<div class="actions">
+			<%= f.submit "检索", class: "btn btn-small" %>
+		</div>
+	<% end %>
+<% end %>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th><%= sort_link @search, :id , "#" %></th>
+			<th><%= sort_link @search, :title %></th>
+			<th><%= sort_link @search, :stack_id %></th>
+			<th><%= sort_link @search, :updated_at %></th>
+			<th>状态</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @notices.each do |notice| %>
+		<tr>
+			<td><%= notice.id %></td>
+			<td><%= notice.title %></td>
+			<td><%= notice.stack.try("name") %></td>
+			<td><%= l notice.updated_at %></td>
+			<td><%= notice.status_text %></td>
+			<td>
+				<%= link_to '<i class="icon-ok-circle"></i> 审核'.html_safe, public_path(main_app.check_admin_chk_entry_path(notice)), :class => "btn" %>
+			</td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+<%= paginate(@notices, :theme => 'twitter-bootstrap') %>

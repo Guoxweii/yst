@@ -1,0 +1,61 @@
+<% content_for :head do %>
+<script>
+$(function() {
+	$("#reject-form").hide();
+	$("#reject").click(function() {
+		$("#reject-form").toggle();
+	});
+})
+</script>
+<% end %>
+
+<div class="page-header"><h1>审核信息</h1></div>
+
+<table class="container table table-bordered">
+  <tr>
+    <td>
+      通知内容
+    </td>
+    <td>
+      <%= @notice.title %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      发布时间
+    </td>
+    <td>
+      <%=(l @notice.released_at) if @notice.released_at.present? %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      过期时间
+    </td>
+    <td>
+      <%=(l @notice.expired_at) if @notice.expired_at.present? %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      内容
+    </td>
+    <td>
+      <%= raw @notice.content %>
+    </td>
+  </tr>
+</table>
+
+<div class="well">
+	<%= link_to '<i class="icon-white icon-ok"></i> 通过'.html_safe, public_path(main_app.check_admin_chk_entry_path(@notice)), :class => "btn btn-success", :confirm => "确定通过？", :method => "put" %>
+	<a id="reject" class="btn btn-danger"><i class="icon-white icon-remove"></i> 拒绝</a>
+
+
+	<%= simple_form_for :notice, :object => @notice, url: public_path(main_app.check_admin_chk_entry_path(@notice)), :html => { :id => "reject-form", :method => "delete" } do |f| %>
+		<hr />
+		<h3>拒绝原因</h3>
+		<%= f.input :alert, :as => :text, input_html: {size: "10x3"}, :label => false %>
+		<%= f.submit "提交", class: "btn btn-primary" %>
+	<% end %>
+</div>
+

@@ -17,3 +17,13 @@ zh-CN:
         extra1:     当前温度
         extra2:     温度范围
         extra3:     天气描述
+      notice:
+        pending:    未审核
+        reject:     审核未通过
+        online:     上线
+    symbolizes:
+      notice:
+        status:
+          pending:    未审核
+          reject:     审核未通过
+          online:     上线

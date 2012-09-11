@@ -42,13 +42,13 @@ p, h1, h2, h3, h4, h5, h6 {
 		font-size: 28px;
 
 		.title {
-			width: 70px;
+			width: 76px;
 			height: 100%;
 		}
 
 		.parent {
 			position: absolute;
-			left: 70px;
+			left: 76px;
 			top: 0;
 			width: 455px;
 			height: 100%;
@@ -99,11 +99,39 @@ p, h1, h2, h3, h4, h5, h6 {
 			overflow: hidden;
 		}
 		.title {
-			padding-left: 5px;
+			margin-left: 5px;
 		}
 		.item {
-			padding-left: 20px;
+			margin-left: 20px;
 			width: 95%
+		}
+	}
+	
+	.weather-icon {
+		position: absolute;
+		top: 128px;
+		left: 665px;
+		width: 165px;
+		height: 125px;
+		
+		&.snow {
+			background: image-url("Snow.png") no-repeat right top;
+		}
+
+		&.sunshine {
+			background: image-url("Sun.png") no-repeat right top;
+		}
+
+		&.cloudy {
+			background: image-url("Cloudy-Sky.png") no-repeat right top;
+		}
+
+		&.rain {
+			background: image-url("Drizzle.png") no-repeat right top;
+		}
+
+		&.thunder {
+			background: image-url("Thunder-Shower.png") no-repeat right top;
 		}
 	}
 
@@ -116,46 +144,27 @@ p, h1, h2, h3, h4, h5, h6 {
 
 		.temperature {
 			height: 50%;
-			width: 140px;
+			width: 165px;
 			font-size: 65px;
 			line-height: 82px;
-			padding-left: 15px;
+			margin-left: 15px;
 			overflow: hidden;
 
 			.unit {
 				font-size: 35px;
 			}
 
-			&.snow {
-				background: image-url("Snow.png") no-repeat right center;
-			}
-
-			&.sunshine {
-				background: image-url("Sun.png") no-repeat right center;
-			}
-
-			&.cloudy {
-				background: image-url("Cloudy-Sky.png") no-repeat right center;
-			}
-
-			&.rain {
-				background: image-url("Drizzle.png") no-repeat right center;
-			}
-
-			&.thunder {
-				background: image-url("Thunder-Shower.png") no-repeat right center;
-			}
-
 		}
 
 		.memo {
 			height: 25%;
-			width: 140px;
+			width: 155px;
 			font-size: 25px;
 			line-height: 41px;
-			padding-left: 15px;
+			margin-left: 15px;
 			overflow: hidden;
 		}
+		
 	}
 
 	.clock {
@@ -166,14 +175,18 @@ p, h1, h2, h3, h4, h5, h6 {
 		height: 165px;
 
 		.date {
-			height: 35px;
-			width: 327px;
+			position: absolute;
+			left: 0;
+			top: 2px;
+			height: 45px;
+			width: 330px;
 			font-size: 31px;
 			text-align: right;
 			line-height: 45px;
-			padding: 10px 18px 0 0;
+			margin-top: 12px;
 		}
 		.time {
+			margin-top: 45px;
 			div {
 				float: left;
 			}
@@ -182,7 +195,7 @@ p, h1, h2, h3, h4, h5, h6 {
 				height: 120px;
 				font-size: 23px;
 				text-align: right;
-				padding-right: 5px;
+				margin-right: 5px;
 				line-height: 65px;
 			}
 			.num {

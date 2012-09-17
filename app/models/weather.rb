@@ -18,7 +18,7 @@ class Weather < Bubble::Entry
     day1 = Weather.where(:title => day).first || Weather.new
     day1.stack = stack
     day1 = day1.update_attributes({
-      :released_at => "2000/01/01".to_time,
+      :released_at => Time.now,
       :title => day.to_s,
       :extra1 => temperature.flatten.first,
       :extra3 => data[7].split(" ").last,
@@ -28,7 +28,7 @@ class Weather < Bubble::Entry
     day2 = Weather.where(:title => day.next_day).first || Weather.new
     day2.stack = stack
     day2.update_attributes({
-      :released_at => "2000/01/01".to_time,
+      :released_at => Time.now,
       :title => day.next_day.to_s,
       :extra2 => data[13].gsub("/","~"),
       :extra3 => data[12].split(" ").last
@@ -37,7 +37,7 @@ class Weather < Bubble::Entry
     day3 = Weather.where(:title => day.next_day(2)).first || Weather.new
     day3.stack = stack
     day3.update_attributes({
-      :released_at => "2000/01/01".to_time,
+      :released_at => Time.now,
       :title => day.next_day(2).to_s,
       :extra2 => data[18].gsub("/","~"),
       :extra3 => data[17].split(" ").last
@@ -46,7 +46,7 @@ class Weather < Bubble::Entry
     day4 = Weather.where(:title => day.next_day(3)).first || Weather.new
     day4.stack = stack
     day4.update_attributes({
-      :released_at => "2000/01/01".to_time,
+      :released_at => Time.now,
       :title => day.next_day(3).to_s,
       :extra2 => data[23].gsub("/","~"),
       :extra3 => data[22].split(" ").last
@@ -55,7 +55,7 @@ class Weather < Bubble::Entry
     day5 = Weather.where(:title => day.next_day(4)).first || Weather.new
     day5.stack = stack
     day5.update_attributes({
-      :released_at => "2000/01/01".to_time,
+      :released_at => Time.now,
       :title => day.next_day(4).to_s,
       :extra2 => data[28].gsub("/","~"),
       :extra3 => data[27].split(" ").last

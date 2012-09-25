@@ -1,12 +1,16 @@
 <% content_for :head do %>
+
 <style type="text/css">
 body {
 	background-color: transparent;
 }
 </style>
+
+
 <script type="text/javascript">
 
-var channel_num = <%= raw @page.widget(PlayerWidget).stack.entries_scoped.first.title.to_json %>
+var channel_num = <%= raw @page.widget(PlayerWidget).stack.entries_scoped.first.title.to_json %>;
+var autoTime;
 
 function setTime(clocks) {
 	var time = $p.now();
@@ -22,32 +26,152 @@ function setTime(clocks) {
 	clocks[2].innerHTML = parseInt(minute/10, 10);
 	clocks[3].innerHTML = minute%10;
 
-	setTimeout(function() {
+	autoTime = null;
+	autoTime = setTimeout(function() {
 		setTime(clocks);
 	}, 5000);
 }
 
-function noticeScroll(element) {
-	var parentElement = $p.findByClass(element, "parent");
-	var innerElement = $p.findByClass(element, "inner");
-	var scrollWidth = innerElement.offsetWidth;
-	var parentWidth = parentElement.clientWidth;
-	if (parentWidth < scrollWidth) {
-		var left = 0;
-		scroll(innerElement, scrollWidth, parentWidth, left);
-	}
-}
+var noticeWidget = $p.instance({
+	init: function(element) {
+		var parentElement = $p.findByClass(element, "parent");
+		var innerElement = $p.findByClass(element, "inner");
+		element.scrollLeft = 0;
+		
+		var self = this;
+		//have bug if the initial time is too short!
+		setTimeout(function(){
+			var scrollWidth = innerElement.offsetWidth;
+			var parentWidth = parentElement.clientWidth;
+			if (parentWidth < scrollWidth) {
+				var left = 0;
+				self.autoNotice = self.scroll(parentElement, scrollWidth, parentWidth, left);
+			}
+		}, 10000)
+	},
 
-function scroll(element, scrollWidth, parentWidth, left) {
-	left -= 8;
-	if (-left > scrollWidth) {
-		left = parentWidth;
+	scroll: function(element, scrollWidth, parentWidth, left) {
+		
+		left += 60;
+		if (left > scrollWidth) {
+			left = 0;
+		}
+		element.scrollLeft = left;
+		
+		this.autoNotice = null;
+		var self = this;
+		this.autoNotice = setTimeout(function() {
+			 self.scroll(element, scrollWidth, parentWidth, left);
+		}, 600)
 	}
-	element.style.left = left + "px";
-	setTimeout(function() {
-		scroll(element, scrollWidth, parentWidth, left);
-	}, 200)
-}
+})
+
+var MessageWidget = $p.clazz({
+	
+	init: function(element, paginateObj,paginateTime, scrollLength, scrollTime) {
+		this.elements = $p.queryByClass(element, "message");
+		this.paginateTime = paginateTime || 1000;
+		this.scrollLength = scrollLength || 40;
+		this.scrollTime = scrollTime || 1000;
+		this.paginateObj = paginateObj;
+	},
+	
+	active: function() {
+		if (this.elements.length < 1) { return };
+		this.currentIndex =  this.currentIndex || 0;
+		this.show();
+		
+		var self = this;
+		setTimeout(function(){
+			self.next();
+		}, this.paginateTime);
+	},
+	
+	show: function() {
+		if (this._preIndex != null && this._preIndex != undefined && this._preIndex != this.currentIndex) {
+			$p.toggle(this.elements[this._preIndex], false);
+		}
+		this.currentElement = this.elements[this.currentIndex];
+		
+		
+		$p.toggle(this.currentElement, true);
+		this.paginateObj.active(this.currentIndex);
+		
+		var parentElement = $p.findByClass(this.currentElement, "parent");
+		if(parentElement != null && parentElement != undefined) { parentElement.scrollTop = 0 }
+		
+		var self = this;
+		setTimeout(function() {
+			self.judgeToScroll();
+		}, 5000);//have bug if the initial time is too short!
+		
+		this._preIndex = this.currentIndex;
+	},
+	
+	judgeToScroll: function() {
+		var parentElement = $p.findByClass(this.currentElement, "parent");
+		if (parentElement == null || parentElement == undefined) {return};
+		
+		var innerElement = $p.findByClass(this.currentElement, "inner");
+		var scrollHeight = innerElement.offsetHeight;
+		var parentHeight = parentElement.clientHeight;
+		
+		if (parentHeight < scrollHeight) {
+			var top = 0;
+			this.scroll(parentElement, scrollHeight, parentHeight, top, 0);
+		}
+	},
+	
+	scroll: function(element, scrollHeight, parentHeight, top) {
+		clearTimeout(this.autoMessageId);
+		
+		top += this.scrollLength;
+		if (top > scrollHeight) { top = 0; };
+		element.scrollTop = top;
+		
+		var self = this;
+		this.autoMessageId = setTimeout(function() {
+			self.scroll(element, scrollHeight, parentHeight, top);
+		}, this.scrollTime)
+	},
+	
+	next: function() {
+		clearTimeout(this.autoMessageId);
+		clearTimeout(this.autoPaginateId);
+		
+		var parentElement = $p.findByClass(this.elements[this.currentIndex], "parent");
+		if (parentElement != null && parentElement != undefined) {
+			parentElement.scrollTop = 0;
+		}
+		
+		this.currentIndex < this.elements.length - 1 ? (this.currentIndex += 1) : (this.currentIndex = 0);
+		this.show();
+		
+		var self = this;
+		this.autoPaginateId = setTimeout(function(){
+			self.next();
+		}, this.paginateTime);
+	}
+});
+
+var paginateWidget = $p.clazz({
+	init: function(element) {
+		this.elements = $p.queryByClass(element, "navi");
+	},
+	
+	active: function(num) {
+		
+		if (this.elements.length == 0) {return};
+		
+		var currentIndex = num;
+		
+		if (this._preIndex != null && this._preIndex != undefined && this._preIndex != currentIndex) {
+			$p.removeClassName(this.elements[this._preIndex], "active");
+		}
+		$p.addClassName(this.elements[currentIndex], "active");
+		this._preIndex = currentIndex;
+	}
+})
 
 $p.ready(function() {
 
@@ -58,22 +182,28 @@ $p.ready(function() {
 	var clocks = $p.queryByClass($p.getById("time"), "num");
 	setTime(clocks);
 
-	<% if Notice.last.present? %>
-	setTimeout(function() {
-		noticeScroll($p.getById("notice"));
-	}, 10000);
+	<% if Notice.online.last.present? %>
+		noticeWidget.init($p.getById("notice"));
 	<% end %>
 
 	setTimeout(function() {
 		window.location.href = window.location.href;
-	}, 1000*60*3)
+	}, 1000*60*10)
+	
+	var newsPaginateWidget = new paginateWidget($p.getById("news-paginate"));
+	var newsWidget = new MessageWidget($p.getById("news"), newsPaginateWidget, 25000, null ,1500);
+	newsWidget.active();
+	
+	var informationPaginateWidget = new paginateWidget($p.getById("information-paginate"));
+	var informationWidget = new MessageWidget($p.getById("information"), informationPaginateWidget, 40000, 60,2000);
+	informationWidget.active();
+	
+	
 })
-
-
 
 </script>
 
-<% @news = @page.widget(NewsWidget).stack.entries_scoped.online.limit(2) %>
+<% @news = @page.widget(NewsWidget).stack.entries_scoped.online.limit(5) %>
 <% @informations = @page.widget(InformationWidget).stack.entries_scoped.online.limit(5) %>
 <% @weather = Weather.where(:title => Date.today.to_s).first || Weather.new %>
 <% end %>
@@ -93,11 +223,21 @@ $p.ready(function() {
 
 	<div id="player" class="player"></div>
 
-	<div class="news">
-		<div class="title">最近新闻</div>
-		<% @news.each do |new| %>
-			<div class="item"><%= new.title %></div>
+	<div id="news" class="news">
+		<% @news.each_with_index do |message,i| %>
+			<div class="message" style="display:<%=raw(i == 0 ? "block": "none") %>">
+			<% if message.poster_url.blank? %>
+				<div class="title">最近新闻</div>
+				<div class="content parent"><div class="inner"><%=raw message.content %></div></div>
+			<% else %>
+				<div class="poster"><div class="inner"><%= image_tag message.poster_url %></div></div>
+			<% end %>
+			</div>
 		<% end %>
+		
+		<div id="news-paginate" class="paginate">
+		<% @news.size.times do |i| %><span class="navi <%=raw (i == 0 ? "active" : "") %>"><%= i + 1 %></span><% end %>
+		</div>
 	</div>
 	
 	<div class="weather-icon <%= @weather.code %>"></div>
@@ -122,11 +262,21 @@ $p.ready(function() {
 		</div>
 	</div>
 
-	<div class="information">
-		<div class="title">参考消息</div>
-		<% @informations.each do |information| %>
-			<div class="item"><%= information.title %></div>
+	<div id="information" class="information">
+		<% @informations.each_with_index do |information, i| %>
+			<div class="message" style="display:<%=raw(i == 0 ? "block": "none") %>">
+			<% if information.poster_url.blank? %>
+				<div class="title">参考消息</div>
+				<div class="content parent"><div class="inner"><%=raw information.content %></div></div>
+			<% else %>
+				<div class="poster"><div class="inner"><%= image_tag information.poster_url %></div></div>
+			<% end %>
+			</div>
 		<% end %>
+		
+		<div id="information-paginate" class="paginate">
+		<% @informations.size.times do |i| %><span class="navi <%=raw (i == 0 ? "active" : "") %>"><%= i + 1 %></span><% end %>
+		</div>
 	</div>
 
 </div>

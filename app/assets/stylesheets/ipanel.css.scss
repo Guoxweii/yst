@@ -17,7 +17,7 @@ body {
 
 p, h1, h2, h3, h4, h5, h6 {
 	margin: 0;
-	padding: 0;
+	padding: 1px;
 }
 
 .hidden {
@@ -25,21 +25,21 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 .panel {
+	top: 0px;
+	left: 0px;
 	width: 1280px;
 	height: 720px;
 	position: absolute;
-	top: 0px;
-	left: 0px;
 	background: image-url("bg.png") no-repeat left top;
 
 	#notice {
-		position: absolute;
 		top: 110px;
 		left: 653px;
 		width: 525px;
 		height: 30px;
-		text-align: 30px;
 		font-size: 28px;
+		text-align: 30px;
+		position: absolute;
 
 		.title {
 			width: 76px;
@@ -47,72 +47,140 @@ p, h1, h2, h3, h4, h5, h6 {
 		}
 
 		.parent {
-			position: absolute;
-			left: 76px;
 			top: 0;
+			left: 76px;
 			width: 455px;
 			height: 100%;
 			overflow: hidden;
+			position: absolute;
 			white-space: nowrap;
 		}
 
 		.inner {
-			position: absolute;
-			left: 0px;
 			top: 0;
+			left: 0;
 			height: 100%;
+			position: absolute;
 		}
 
 	}
 
 	#player {
-		position: absolute;
 		top: 148px;
 		left: 116px;
 		width: 525px;
 		height: 344px;
+		position: absolute;
 	}
 
 	.news {
-		position: absolute;
 		top: 505px;
 		left: 114px;
 		width: 527px;
 		height: 165px;
+		position: absolute;
+			
+		.message {
+			.content {
+				top: 48px;
+				width: 95%;
+				height: 120px;
+				overflow: hidden;
+				margin-left: 20px;
+				position: absolute;
+			}
+			.poster {
+				top: 2px;
+				width: 100%;
+				height: 165px;
+				overflow: hidden;
+				position: absolute;
+			}
+		}
 	}
 
 	.information {
-		position: absolute;
-		top: 330px;
+		top: 328px;
 		left: 655px;
 		width: 525px;
-		height: 330px;
+		height: 340px;
+		position: absolute;
+		
+		.message {
+			.content {
+				top: 48px;
+				width: 95%;
+				height: 292px;
+				overflow: hidden;
+				margin-left: 20px;
+				position: absolute;
+			}
+			
+			.poster {
+				width: 100%;
+				height: 345px;
+				overflow: hidden;
+				position: absolute;
+			}
+		}
 	}
 
 	.news, .information {
-
-		div {
+		font-size: 23px;
+		
+		.message {
+			position: absolute;
 			width: 100%;
-			height: 57px;
-			line-height: 50px;
-			font-size: 23px;
-			overflow: hidden;
+			
+			.title {
+				width: 100%;
+				height: 57px;
+				margin-left: 5px;
+				line-height: 50px;
+			}
 		}
-		.title {
-			margin-left: 5px;
+		
+		.parent .inner {
+			top: 0;
+			left: 0;
+			position: absolute;
 		}
-		.item {
-			margin-left: 20px;
-			width: 95%
+		
+		.paginate {
+			right: 5px;
+			bottom: -3px;
+			position: absolute;
+			height: 25px;
+			width: 200px;
+			display: block;
+			text-align: right;
+
+			.navi {
+				display: inline-block;
+				color: white;
+				width: 22px;
+				height: 24px;
+				line-height: 24px;
+				text-shadow: 0 0;
+				font-size: 16px;
+				text-align: center;
+				
+				background: image-url("paginate-bg.png") no-repeat center center;
+				
+				&.active {
+					color: black;
+					background: image-url("paginate-active.png") no-repeat center center;
+				}
+			}
 		}
 	}
 	
 	.weather-icon {
-		position: absolute;
 		top: 128px;
 		left: 665px;
 		width: 165px;
 		height: 125px;
+		position: absolute;
 		
 		&.snow {
 			background: image-url("Snow.png") no-repeat right top;
@@ -136,19 +204,19 @@ p, h1, h2, h3, h4, h5, h6 {
 	}
 
 	.weather {
-		position: absolute;
 		top: 148px;
 		left: 655px;
 		width: 165px;
 		height: 165px;
+		position: absolute;
 
 		.temperature {
 			height: 50%;
 			width: 165px;
 			font-size: 65px;
+			overflow: hidden;
 			line-height: 82px;
 			margin-left: 15px;
-			overflow: hidden;
 
 			.unit {
 				font-size: 35px;
@@ -160,30 +228,30 @@ p, h1, h2, h3, h4, h5, h6 {
 			height: 25%;
 			width: 155px;
 			font-size: 25px;
+			overflow: hidden;
 			line-height: 41px;
 			margin-left: 15px;
-			overflow: hidden;
 		}
 		
 	}
 
 	.clock {
-		position: absolute;
 		top: 148px;
 		left: 833px;
 		width: 345px;
 		height: 165px;
+		position: absolute;
 
 		.date {
 			@include box-sizing(border-box);
+			width: 100%;
+			height: 45px;
+			font-size: 31px;
+			line-height: 45px;
+			
+			margin-top: 12px;
 			text-align: right;
 			padding-right: 10px;
-			margin-top: 12px;
-			
-			height: 45px;
-			line-height: 45px;
-			width: 100%;
-			font-size: 31px;
 		}
 		.time {
 			margin-top: -10px;
@@ -194,9 +262,9 @@ p, h1, h2, h3, h4, h5, h6 {
 				width: 20%;
 				height: 120px;
 				font-size: 23px;
+				line-height: 65px;
 				text-align: right;
 				margin-right: 5px;
-				line-height: 65px;
 			}
 			.num {
 				width: 17%;
@@ -210,8 +278,8 @@ p, h1, h2, h3, h4, h5, h6 {
 				width: 8%;
 				height: 120px;
 				font-size: 70px;
-				text-align: center;
 				line-height: 95px;
+				text-align: center;
 			}
 		}
 	}

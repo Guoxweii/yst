@@ -1,7 +1,8 @@
 zh-CN:
   activerecord:
     models:
-      notice: 消息
+      notice:  通知
+      message: 信息
       channel: 频道
       player_widget: 频道组件
       information_widget: 消息组件
@@ -23,6 +24,11 @@ zh-CN:
         online:     上线
     symbolizes:
       notice:
+        status:
+          pending:    未审核
+          reject:     审核未通过
+          online:     上线
+      message:
         status:
           pending:    未审核
           reject:     审核未通过

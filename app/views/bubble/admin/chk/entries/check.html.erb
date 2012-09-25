@@ -44,6 +44,14 @@ $(function() {
       <%= raw @notice.content %>
     </td>
   </tr>
+  <tr>
+    <td>
+      图片
+    </td>
+    <td>
+      <%= image_tag @notice.poster_url %>
+    </td>
+  </tr>
 </table>
 
 <div class="well">

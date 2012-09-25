@@ -163,7 +163,7 @@ var paginateWidget = $p.clazz({
 		
 		if (this.elements.length == 0) {return};
 		
-		var currentIndex = this.elements.length - num - 1; //this code is very ugly by css's problem!
+		var currentIndex = num;
 		
 		if (this._preIndex != null && this._preIndex != undefined && this._preIndex != currentIndex) {
 			$p.removeClassName(this.elements[this._preIndex], "active");
@@ -236,9 +236,7 @@ $p.ready(function() {
 		<% end %>
 		
 		<div id="news-paginate" class="paginate">
-		<% @news.size.downto(1) do |i| %>
-			<div class="navi <%=raw (i == 1 ? "active" : "") %>"><%= i %></div>
-		<% end %>
+		<% @news.size.times do |i| %><span class="navi <%=raw (i == 0 ? "active" : "") %>"><%= i + 1 %></span><% end %>
 		</div>
 	</div>
 	
@@ -277,9 +275,7 @@ $p.ready(function() {
 		<% end %>
 		
 		<div id="information-paginate" class="paginate">
-		<% @informations.size.downto(1) do |i| %>
-			<div class="navi <%=raw (i == 1 ? "active" : "") %>"><%= i %></div>
-		<% end %>
+		<% @informations.size.times do |i| %><span class="navi <%=raw (i == 0 ? "active" : "") %>"><%= i + 1 %></span><% end %>
 		</div>
 	</div>
 

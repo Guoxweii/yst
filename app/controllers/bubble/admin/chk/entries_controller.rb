@@ -2,12 +2,12 @@
 class Bubble::Admin::Chk::EntriesController < Bubble::Admin::BaseController
   
   def checkable
-    @search = Notice.pending.search(params[:search])
+    @search = BaseEntry.pending.search(params[:search])
     @notices = @search.page(params[:page])
   end
   
   def check
-    @notice = Notice.pending.find(params[:id])
+    @notice = BaseEntry.pending.find(params[:id])
 
     if !request.get?
       @notice.attributes = params[:notice]

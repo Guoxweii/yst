@@ -165,11 +165,11 @@ var paginateWidget = $p.clazz({
 		
 		var currentIndex = this.elements.length - num - 1; //this code is very ugly by css's problem!
 		
-		if (this._preIndex != null && this._preIndex != undefined && this._preIndex != num) {
-			$p.removeClassName(this.elements[currentIndex], "active");
+		if (this._preIndex != null && this._preIndex != undefined && this._preIndex != currentIndex) {
+			$p.removeClassName(this.elements[this._preIndex], "active");
 		}
 		$p.addClassName(this.elements[currentIndex], "active");
-		this._preIndex = num;
+		this._preIndex = currentIndex;
 	}
 })
 

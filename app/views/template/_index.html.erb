@@ -52,16 +52,17 @@ var noticeWidget = $p.instance({
 
 	scroll: function(element, scrollWidth, parentWidth, left) {
 		
-		left += 60;
-		if (left > scrollWidth) {
-			left = 0;
+		var currentLeft = left;
+		currentLeft += 60;
+		if (currentLeft > scrollWidth) {
+			currentLeft = 0;
 		}
-		element.scrollLeft = left;
+		element.scrollLeft = currentLeft;
 		
 		this.autoNotice = null;
 		var self = this;
 		this.autoNotice = setTimeout(function() {
-			 self.scroll(element, scrollWidth, parentWidth, left);
+			 self.scroll(element, scrollWidth, parentWidth, currentLeft);
 		}, 600)
 	}
 })
@@ -125,13 +126,14 @@ var MessageWidget = $p.clazz({
 	scroll: function(element, scrollHeight, parentHeight, top) {
 		clearTimeout(this.autoMessageId);
 		
-		top += this.scrollLength;
-		if (top > scrollHeight) { top = 0; };
-		element.scrollTop = top;
+		var currentTop = top;
+		currentTop += this.scrollLength;
+		if (currentTop > scrollHeight) { currentTop = 0; };
+		element.scrollTop = currentTop;
 		
 		var self = this;
 		this.autoMessageId = setTimeout(function() {
-			self.scroll(element, scrollHeight, parentHeight, top);
+			self.scroll(element, scrollHeight, parentHeight, currentTop);
 		}, this.scrollTime)
 	},
 	

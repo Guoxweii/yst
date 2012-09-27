@@ -49,7 +49,7 @@ $(function() {
       图片
     </td>
     <td>
-      <%= image_tag @notice.poster_url %>
+      <%= image_tag @notice.poster_url if @notice.respond_to?("poster_url") %>
     </td>
   </tr>
 </table>

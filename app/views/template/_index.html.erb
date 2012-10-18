@@ -45,23 +45,20 @@ var noticeWidget = $p.instance({
 			var parentWidth = parentElement.clientWidth;
 			if (parentWidth < scrollWidth) {
 				var left = 0;
-				self.autoNotice = self.scroll(parentElement, scrollWidth, parentWidth, left);
+				self.autoNoticeId = self.scroll(innerElement, scrollWidth, parentWidth, left);
 			}
 		}, 10000)
 	},
 
 	scroll: function(element, scrollWidth, parentWidth, left) {
-		
 		var currentLeft = left;
 		currentLeft += 60;
-		if (currentLeft > scrollWidth) {
-			currentLeft = 0;
-		}
-		element.scrollLeft = currentLeft;
+		if (currentLeft > scrollWidth) { currentLeft = 0; }
+		element.style.left = "-" + currentLeft + "px";
 		
-		this.autoNotice = null;
+		clearTimeout(this.autoNoticeId);
 		var self = this;
-		this.autoNotice = setTimeout(function() {
+		this.autoNoticeId = setTimeout(function() {
 			 self.scroll(element, scrollWidth, parentWidth, currentLeft);
 		}, 600)
 	}
@@ -119,7 +116,7 @@ var MessageWidget = $p.clazz({
 		
 		if (parentHeight < scrollHeight) {
 			var top = 0;
-			this.scroll(parentElement, scrollHeight, parentHeight, top, 0);
+			this.scroll(innerElement, scrollHeight, parentHeight, top, 0);
 		}
 	},
 	
@@ -128,8 +125,8 @@ var MessageWidget = $p.clazz({
 		
 		var currentTop = top;
 		currentTop += this.scrollLength;
-		if (currentTop > scrollHeight) { currentTop = 0; };
-		element.scrollTop = currentTop;
+		if (currentTop > scrollHeight ) { currentTop = 0; };
+		element.style.top = "-" + currentTop + "px";
 		
 		var self = this;
 		this.autoMessageId = setTimeout(function() {
@@ -142,9 +139,7 @@ var MessageWidget = $p.clazz({
 		clearTimeout(this.autoPaginateId);
 		
 		var parentElement = $p.findByClass(this.elements[this.currentIndex], "parent");
-		if (parentElement != null && parentElement != undefined) {
-			parentElement.scrollTop = 0;
-		}
+		if (parentElement != null && parentElement != undefined) { parentElement.scrollTop = 0; }
 		
 		this.currentIndex < this.elements.length - 1 ? (this.currentIndex += 1) : (this.currentIndex = 0);
 		this.show();
@@ -172,7 +167,7 @@ var paginateWidget = $p.clazz({
 		}
 		$p.addClassName(this.elements[currentIndex], "active");
 		this._preIndex = currentIndex;
-	}
+	},
 })
 
 $p.ready(function() {
@@ -229,7 +224,7 @@ $p.ready(function() {
 		<% @news.each_with_index do |message,i| %>
 			<div class="message" style="display:<%=raw(i == 0 ? "block": "none") %>">
 			<% if message.poster_url.blank? %>
-				<div class="title">最近新闻</div>
+				<div class="title"><%= @page.widget(NewsWidget).stack.name %></div>
 				<div class="content parent"><div class="inner"><%=raw message.content %></div></div>
 			<% else %>
 				<div class="poster"><div class="inner"><%= image_tag message.poster_url %></div></div>
@@ -238,7 +233,9 @@ $p.ready(function() {
 		<% end %>
 		
 		<div id="news-paginate" class="paginate">
+		<% if @news.size > 1 %>
 		<% @news.size.times do |i| %><span class="navi <%=raw (i == 0 ? "active" : "") %>"><%= i + 1 %></span><% end %>
+		<% end %>
 		</div>
 	</div>
 	
@@ -268,7 +265,7 @@ $p.ready(function() {
 		<% @informations.each_with_index do |information, i| %>
 			<div class="message" style="display:<%=raw(i == 0 ? "block": "none") %>">
 			<% if information.poster_url.blank? %>
-				<div class="title">参考消息</div>
+				<div class="title"><%= @page.widget(InformationWidget).stack.name %></div>
 				<div class="content parent"><div class="inner"><%=raw information.content %></div></div>
 			<% else %>
 				<div class="poster"><div class="inner"><%= image_tag information.poster_url %></div></div>
@@ -277,7 +274,9 @@ $p.ready(function() {
 		<% end %>
 		
 		<div id="information-paginate" class="paginate">
+		<% if @informations.size > 1 %>
 		<% @informations.size.times do |i| %><span class="navi <%=raw (i == 0 ? "active" : "") %>"><%= i + 1 %></span><% end %>
+		<% end %>
 		</div>
 	</div>
 
